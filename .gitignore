@@ -1,15 +1,19 @@
-# Ignorer tout sauf tp-labs et exemples-presentation
+# Ignorer tout sauf tp-labs, exemples-presentation et jwt-demo
 /*
 !/tp-labs/
 !/exemples-presentation/
+!/jwt-demo/
 !.gitignore
 !README.md
 
-# Node modules dans tp-labs
+# Node modules
 tp-labs/*/node_modules/
+jwt-demo/backend/node_modules/
+jwt-demo/frontend/node_modules/
+jwt-demo/frontend/dist/
 
 # EXCEPTION ÉDUCATIVE : Les fichiers .env sont normalement dans .gitignore
-# Ici, ils sont inclus uniquement pour faciliter les TPs (secrets factices)
+# Ici, ils sont inclus uniquement pour faciliter les TPs et la démo (secrets factices)
 # ⚠️ EN PRODUCTION : NE JAMAIS COMMITER DE FICHIERS .env RÉELS !
 
 # Node.js
