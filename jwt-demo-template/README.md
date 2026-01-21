@@ -369,11 +369,6 @@ Consultez le dossier `../exemples-presentation/` pour 5 exemples JS complets :
 4. `4-passport-jwt.js` : Passport JWT + RBAC
 5. `5-refresh-token.js` : Pattern Refresh Token complet
 
-### Slides du cours
-
-- `auth-jwt-webservices.html` : Théorie complète sur JWT et Passport
-- `jwt-demo-tutorial.html` : Guide pas-à-pas pour ce projet
-
 ---
 
 ## 💡 Conseils
@@ -412,14 +407,6 @@ Testez **après chaque TODO complété** :
 - TODO 9-11 → Ouvrez la console, vérifiez les headers des requêtes
 - TODO 12 → Testez les redirections manuellement dans l'URL
 - TODO 13-17 → Testez le flow complet : register → login → home → logout
-
----
-
-## 📞 Support
-
-- **Email** : joseph.azar@univ-fcomte.fr
-- **Exemples** : Dossier `../exemples-presentation/`
-- **Slides** : Fichiers HTML dans le dossier `slides/`
 
 ---
 
