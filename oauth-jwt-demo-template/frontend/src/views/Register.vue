@@ -1,61 +1,93 @@
 <template>
-  <div class="container">
-    <h1>🎓 Inscription</h1>
-
-    <div v-if="error" class="error">{{ error }}</div>
-    <div v-if="success" class="success">{{ success }}</div>
-
-    <form @submit.prevent="handleRegister">
-      <div class="form-group">
-        <label for="name">Nom complet</label>
-        <input
-          type="text"
-          id="name"
-          v-model="form.name"
-          placeholder="Jean Dupont"
-          required
-        />
+  <div class="flex-center">
+    <div class="card" style="width: 100%; max-width: 400px;">
+      
+      <!-- Card Header -->
+      <div class="card-header" style="text-align: center;">
+        <h1 class="card-title">Inscription</h1>
+        <p class="card-description">Créez votre compte pour commencer</p>
       </div>
 
-      <div class="form-group">
-        <label for="email">Email</label>
-        <input
-          type="email"
-          id="email"
-          v-model="form.email"
-          placeholder="jean.dupont@example.com"
-          required
-        />
+      <!-- Card Content -->
+      <div class="card-content">
+        
+        <!-- Alerts -->
+        <div v-if="error" class="alert alert-destructive">
+          {{ error }}
+        </div>
+        <div v-if="success" class="alert alert-success">
+          {{ success }}
+        </div>
+
+        <form @submit.prevent="handleRegister">
+          <div class="input-group">
+            <label class="label" for="name">Nom complet</label>
+            <input
+              type="text"
+              id="name"
+              v-model="form.name"
+              class="input"
+              placeholder="Jean Dupont"
+              required
+            />
+          </div>
+
+          <div class="input-group">
+            <label class="label" for="email">Email</label>
+            <input
+              type="email"
+              id="email"
+              v-model="form.email"
+              class="input"
+              placeholder="jean.dupont@example.com"
+              required
+            />
+          </div>
+
+          <div class="input-group">
+            <label class="label" for="password">Mot de passe</label>
+            <input
+              type="password"
+              id="password"
+              v-model="form.password"
+              class="input"
+              placeholder="Min 6 caractères"
+              required
+              minlength="6"
+            />
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-full" :disabled="loading">
+            {{ loading ? 'Inscription...' : "S'inscrire" }}
+          </button>
+        </form>
+
+        <div class="separator">
+          <div class="separator-line"></div>
+        </div>
+
+        <!-- Links -->
+        <div style="text-align: center;">
+          <span style="font-size: 0.875rem; color: var(--muted-foreground);">
+            Déjà un compte ? 
+            <router-link to="/login" class="link">Se connecter</router-link>
+          </span>
+        </div>
+
       </div>
 
-      <div class="form-group">
-        <label for="password">Mot de passe</label>
-        <input
-          type="password"
-          id="password"
-          v-model="form.password"
-          placeholder="Min 6 caractères"
-          required
-          minlength="6"
-        />
+      <!-- Footer/Info -->
+      <div class="card-footer" style="flex-direction: column;">
+         <div class="professor-note" style="width: 100%;">
+          <h3>💡 JWT Demo</h3>
+          <ul>
+            <li>Pas de session serveur</li>
+            <li>Token stocké dans <code>localStorage</code></li>
+            <li>MongoDB pour les utilisateurs uniquement</li>
+          </ul>
+         </div>
       </div>
 
-      <button type="submit" :disabled="loading">
-        {{ loading ? 'Inscription...' : 'S\'inscrire' }}
-      </button>
-    </form>
-
-    <div class="link">
-      Déjà un compte ? <router-link to="/login">Se connecter</router-link>
-    </div>
-
-    <div class="jwt-info">
-      <h3>💡 JWT Demo</h3>
-      <p>
-        ✅ Pas de session serveur<br>
-        ✅ Token stocké dans <code>localStorage</code><br>
-        ✅ MongoDB pour les utilisateurs uniquement
-      </p>
     </div>
   </div>
 </template>
@@ -86,8 +118,6 @@ export default {
       try {
         const response = await authService.register(this.form)
         this.success = response.message
-
-        // Rediriger vers home après inscription réussie
         setTimeout(() => {
           this.$router.push('/home')
         }, 1000)

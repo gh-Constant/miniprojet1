@@ -105,15 +105,13 @@ passport.use(new DiscordStrategy({
 // ===================================
 // Configuration GitHub Strategy
 // ===================================
-const GitHubStrategy = require('passport-github2').Strategy;
+const GitHubStrategy = require('passport-github').Strategy;
 const { findUserByGitHubId, createUserFromGitHub } = require('../models/User');
 
 passport.use(new GitHubStrategy({
     clientID: process.env.GITHUB_CLIENT_ID,
     clientSecret: process.env.GITHUB_CLIENT_SECRET,
     callbackURL: process.env.GITHUB_CALLBACK_URL,
-    scope: ['user:email'],
-    customHeaders: { "User-Agent": "oauth-jwt-demo" },
     passReqToCallback: true
   },
   async (req, accessToken, refreshToken, profile, done) => {
@@ -122,19 +120,26 @@ passport.use(new GitHubStrategy({
       let user = await findUserByGitHubId(db, profile.id);
 
       if (!user) {
-        // GitHub profile.emails peut être tableau
-        const email = profile.emails && profile.emails.length > 0 ? profile.emails[0].value : null;
-        const photo = profile.photos && profile.photos.length > 0 ? profile.photos[0].value : null;
-        
+        // GitHub may not always provide email (privacy settings)
+        const email = profile.emails && profile.emails.length > 0
+          ? profile.emails[0].value
+          : null;
+
+        // Get avatar from profile or _json
+        const photo = profile.photos && profile.photos.length > 0
+          ? profile.photos[0].value
+          : profile._json?.avatar_url || null;
+
         user = await createUserFromGitHub(db, {
           githubId: profile.id,
-          email: email,
-          name: profile.displayName || profile.username,
+          email: email, // Can be null
+          name: profile.displayName || profile.username || 'GitHub User',
           picture: photo
         });
       }
       return done(null, user);
     } catch (error) {
+      console.error('GitHub OAuth error:', error);
       return done(error, null);
     }
   }
