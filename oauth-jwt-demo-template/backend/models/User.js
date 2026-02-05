@@ -75,11 +75,70 @@ async function createUserFromGoogle(db, { googleId, email, name, picture }) {
   };
 }
 
+
+// Trouver un utilisateur par son Discord ID
+async function findUserByDiscordId(db, discordId) {
+  return await db.collection('users').findOne({ discordId });
+}
+
+// Créer un utilisateur depuis Discord OAuth
+async function createUserFromDiscord(db, { discordId, email, name, picture }) {
+  const result = await db.collection('users').insertOne({
+    discordId,
+    email: email ? email.toLowerCase() : null,
+    name,
+    picture,
+    provider: 'discord',
+    createdAt: new Date()
+  });
+
+  return {
+    _id: result.insertedId,
+    discordId,
+    email: email ? email.toLowerCase() : null,
+    name,
+    picture,
+    provider: 'discord',
+    createdAt: new Date()
+  };
+}
+
+// Trouver un utilisateur par son GitHub ID
+async function findUserByGitHubId(db, githubId) {
+  return await db.collection('users').findOne({ githubId });
+}
+
+// Créer un utilisateur depuis GitHub OAuth
+async function createUserFromGitHub(db, { githubId, email, name, picture }) {
+  const result = await db.collection('users').insertOne({
+    githubId,
+    email: email ? email.toLowerCase() : null,
+    name,
+    picture,
+    provider: 'github',
+    createdAt: new Date()
+  });
+
+  return {
+    _id: result.insertedId,
+    githubId,
+    email: email ? email.toLowerCase() : null,
+    name,
+    picture,
+    provider: 'github',
+    createdAt: new Date()
+  };
+}
+
 module.exports = {
   findUserByEmail,
   findUserById,
   createUser,
   comparePassword,
   findUserByGoogleId,
-  createUserFromGoogle
+  createUserFromGoogle,
+  findUserByDiscordId,
+  createUserFromDiscord,
+  findUserByGitHubId,
+  createUserFromGitHub
 };
